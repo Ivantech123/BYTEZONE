@@ -135,29 +135,34 @@ export default function App() {
               onClick={(e) => e.stopPropagation()}
               className="relative w-full min-h-[100dvh] md:min-h-0 md:h-auto md:max-h-[85vh] max-w-[1000px] liquid-glass bg-dark rounded-none md:rounded-[32px] flex flex-col md:flex-row md:overflow-hidden pb-8 md:pb-0"
             >
+              {/* CLOSE BUTTON */}
               <button 
                 onClick={() => setSelectedServer(null)} 
-                className="fixed md:absolute top-4 right-4 md:right-4 z-[60] w-10 h-10 sm:w-12 sm:h-12 bg-black/40 backdrop-blur border border-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all group shadow-lg"
+                className="absolute top-4 right-4 z-[60] w-10 h-10 sm:w-12 sm:h-12 bg-black/40 backdrop-blur border border-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all group shadow-lg"
               >
                 <X className="w-5 h-5 text-cream group-hover:scale-110 transition-transform" />
               </button>
 
-              <div className="w-full md:w-[45%] h-[40vh] min-h-[300px] md:min-h-0 md:h-auto relative shrink-0 p-4 md:p-0">
-                <div className="w-full h-full relative rounded-[24px] md:rounded-none overflow-hidden">
+              {/* MOBILE TITLE */}
+              <div className="md:hidden w-full flex justify-between items-start p-5 pr-16 pt-5">
+                <h2 className="font-grotesk text-[32px] sm:text-[40px] uppercase text-cream leading-none tracking-wide">{selectedServer.name}</h2>
+                <span className="font-mono text-[18px] sm:text-[24px] text-neon font-bold mt-1">{selectedServer.price}</span>
+              </div>
+
+              <div className="w-full md:w-[45%] shrink-0 p-4 pt-0 md:p-0">
+                <div className="w-full relative aspect-[4/3] md:aspect-auto md:h-full rounded-[24px] md:rounded-none overflow-hidden">
                   <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
                     <source src={selectedServer.video} type="video/mp4" />
                   </video>
-                  <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-dark to-transparent md:pointer-events-none md:block hidden md:flex"></div>
-                  <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 z-10 liquid-glass rounded-full px-3 py-1.5 sm:px-4 sm:py-2 border border-white/5">
-                    <span className="font-condiment text-neon text-[14px] sm:text-[20px] mix-blend-exclusion">Лицо бренда</span>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-dark to-transparent hidden md:block"></div>
                 </div>
               </div>
 
-              <div className="w-full md:w-[55%] p-5 pt-0 md:pt-12 sm:p-10 md:p-12 flex flex-col items-start justify-start md:overflow-y-auto relative z-10">
-                <div className="flex w-full justify-between items-start mb-4 sm:mb-6 gap-2 sm:gap-4 mt-2 md:mt-0">
-                  <h2 className="font-grotesk text-[32px] sm:text-[48px] uppercase text-cream leading-none tracking-wide">{selectedServer.name}</h2>
-                  <span className="font-mono text-[20px] sm:text-[28px] text-neon font-bold">{selectedServer.price}</span>
+              <div className="w-full md:w-[55%] p-5 pt-2 sm:p-10 md:p-12 flex flex-col items-start justify-start md:overflow-y-auto relative z-10">
+                {/* DESKTOP TITLE */}
+                <div className="hidden md:flex w-full justify-between items-start mb-6 gap-4">
+                  <h2 className="font-grotesk text-[48px] uppercase text-cream leading-none tracking-wide">{selectedServer.name}</h2>
+                  <span className="font-mono text-[28px] text-neon font-bold">{selectedServer.price}</span>
                 </div>
                 
                 <p className="font-mono text-[12px] sm:text-[15px] text-cream/80 mb-6 sm:mb-8 uppercase leading-relaxed">
@@ -396,9 +401,6 @@ export default function App() {
                     <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
                       <source src={server.video} type="video/mp4" />
                     </video>
-                    <div className="absolute top-4 left-4 liquid-glass rounded-full px-4 py-1.5 border border-white/5">
-                      <span className="font-condiment text-neon text-[16px] mix-blend-exclusion">Лицо бренда</span>
-                    </div>
                   </div>
                   
                   <p className="font-mono text-[13px] text-cream/70 uppercase mb-6 px-2 leading-relaxed min-h-[60px]">
