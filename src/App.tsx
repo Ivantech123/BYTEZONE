@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Mail, Twitter, Github, ChevronRight, X, Cpu, HardDrive, Infinity, Shield } from 'lucide-react';
+import { Mail, Twitter, Github, ChevronRight, X, Cpu, HardDrive, Infinity, Shield, Menu } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const NAV_ITEMS = [
@@ -64,6 +64,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedServer, setSelectedServer] = useState<typeof SERVERS[0] | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -124,7 +125,7 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 bg-dark/80 backdrop-blur-md"
+            className="fixed inset-0 z-[150] flex items-center justify-center md:p-8 bg-dark/95 md:bg-dark/80 backdrop-blur-md"
             onClick={() => setSelectedServer(null)}
           >
             <motion.div
@@ -132,76 +133,78 @@ export default function App() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-[1000px] liquid-glass bg-dark/95 sm:bg-dark/80 rounded-[20px] sm:rounded-[32px] flex flex-col md:flex-row max-h-[90vh] md:max-h-[85vh] overflow-y-auto md:overflow-hidden"
+              className="relative w-full h-[100dvh] md:h-auto md:max-h-[85vh] max-w-[1000px] liquid-glass bg-dark rounded-none md:rounded-[32px] flex flex-col md:flex-row overflow-y-auto md:overflow-hidden"
             >
               <button 
                 onClick={() => setSelectedServer(null)} 
-                className="absolute top-4 right-4 z-[60] w-10 h-10 sm:w-12 sm:h-12 bg-black/40 backdrop-blur border border-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all group"
+                className="absolute top-4 right-4 z-[60] w-10 h-10 sm:w-12 sm:h-12 bg-black/40 backdrop-blur border border-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all group shadow-lg"
               >
                 <X className="w-5 h-5 text-cream group-hover:scale-110 transition-transform" />
               </button>
 
-              <div className="w-full md:w-[45%] h-[40vh] min-h-[300px] md:min-h-0 md:h-auto relative shrink-0">
-                <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
-                  <source src={selectedServer.video} type="video/mp4" />
-                </video>
-                <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-dark to-transparent pointer-events-none"></div>
-                <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 z-10 liquid-glass rounded-full px-4 py-2 border border-white/5">
-                  <span className="font-condiment text-neon text-[16px] sm:text-[20px] mix-blend-exclusion">Лицо бренда</span>
+              <div className="w-full md:w-[45%] h-[40vh] min-h-[300px] md:min-h-0 md:h-auto relative shrink-0 p-4 md:p-0">
+                <div className="w-full h-full relative rounded-[24px] md:rounded-none overflow-hidden">
+                  <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
+                    <source src={selectedServer.video} type="video/mp4" />
+                  </video>
+                  <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-dark to-transparent md:pointer-events-none md:block hidden md:flex"></div>
+                  <div className="absolute bottom-4 left-4 md:bottom-8 md:left-8 z-10 liquid-glass rounded-full px-3 py-1.5 sm:px-4 sm:py-2 border border-white/5">
+                    <span className="font-condiment text-neon text-[14px] sm:text-[20px] mix-blend-exclusion">Лицо бренда</span>
+                  </div>
                 </div>
               </div>
 
-              <div className="w-full md:w-[55%] p-6 sm:p-10 md:p-12 flex flex-col items-start justify-start md:overflow-y-auto relative">
-                <div className="flex w-full justify-between items-start mb-6 gap-4">
+              <div className="w-full md:w-[55%] p-5 pt-0 md:pt-12 sm:p-10 md:p-12 flex flex-col items-start justify-start md:overflow-y-auto relative z-10">
+                <div className="flex w-full justify-between items-start mb-4 sm:mb-6 gap-2 sm:gap-4 mt-2 md:mt-0">
                   <h2 className="font-grotesk text-[32px] sm:text-[48px] uppercase text-cream leading-none tracking-wide">{selectedServer.name}</h2>
                   <span className="font-mono text-[20px] sm:text-[28px] text-neon font-bold">{selectedServer.price}</span>
                 </div>
                 
-                <p className="font-mono text-[13px] sm:text-[15px] text-cream/80 mb-8 uppercase leading-relaxed">
+                <p className="font-mono text-[12px] sm:text-[15px] text-cream/80 mb-6 sm:mb-8 uppercase leading-relaxed">
                   {selectedServer.extended.fullDesc}
                 </p>
 
-                <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full mb-8">
-                  <div className="liquid-glass rounded-[20px] p-4 flex items-center gap-4 bg-black/20">
-                    <Cpu className="w-6 h-6 text-neon opacity-80 shrink-0" />
+                <div className="grid grid-cols-2 gap-2 sm:gap-4 w-full mb-6 sm:mb-8">
+                  <div className="liquid-glass rounded-[16px] sm:rounded-[20px] p-3 sm:p-4 flex items-center gap-3 sm:gap-4 bg-black/20">
+                    <Cpu className="w-5 h-5 sm:w-6 sm:h-6 text-neon opacity-80 shrink-0" />
                     <div className="flex flex-col">
-                      <span className="font-mono text-[10px] text-cream/50 uppercase tracking-wider">Процессор</span>
-                      <span className="font-mono text-[14px] text-cream font-bold">{selectedServer.cpu}</span>
+                      <span className="font-mono text-[9px] sm:text-[10px] text-cream/50 uppercase tracking-wider">Процессор</span>
+                      <span className="font-mono text-[12px] sm:text-[14px] text-cream font-bold">{selectedServer.cpu}</span>
                     </div>
                   </div>
-                  <div className="liquid-glass rounded-[20px] p-4 flex items-center gap-4 bg-black/20">
-                    <HardDrive className="w-6 h-6 text-neon opacity-80 shrink-0" />
+                  <div className="liquid-glass rounded-[16px] sm:rounded-[20px] p-3 sm:p-4 flex items-center gap-3 sm:gap-4 bg-black/20">
+                    <HardDrive className="w-5 h-5 sm:w-6 sm:h-6 text-neon opacity-80 shrink-0" />
                     <div className="flex flex-col">
-                      <span className="font-mono text-[10px] text-cream/50 uppercase tracking-wider">ОЗУ</span>
-                      <span className="font-mono text-[14px] text-cream font-bold">{selectedServer.ram}</span>
+                      <span className="font-mono text-[9px] sm:text-[10px] text-cream/50 uppercase tracking-wider">ОЗУ</span>
+                      <span className="font-mono text-[12px] sm:text-[14px] text-cream font-bold">{selectedServer.ram}</span>
                     </div>
                   </div>
-                  <div className="liquid-glass rounded-[20px] p-4 flex items-center gap-4 bg-black/20">
-                    <HardDrive className="w-6 h-6 text-neon opacity-80 shrink-0" />
+                  <div className="liquid-glass rounded-[16px] sm:rounded-[20px] p-3 sm:p-4 flex items-center gap-3 sm:gap-4 bg-black/20">
+                    <HardDrive className="w-5 h-5 sm:w-6 sm:h-6 text-neon opacity-80 shrink-0" />
                     <div className="flex flex-col">
-                      <span className="font-mono text-[10px] text-cream/50 uppercase tracking-wider">SSD</span>
-                      <span className="font-mono text-[14px] text-cream font-bold">{selectedServer.disk}</span>
+                      <span className="font-mono text-[9px] sm:text-[10px] text-cream/50 uppercase tracking-wider">SSD</span>
+                      <span className="font-mono text-[12px] sm:text-[14px] text-cream font-bold">{selectedServer.disk}</span>
                     </div>
                   </div>
-                  <div className="liquid-glass rounded-[20px] p-4 flex items-center gap-4 bg-black/20">
-                    <Infinity className="w-6 h-6 text-neon opacity-80 shrink-0" />
+                  <div className="liquid-glass rounded-[16px] sm:rounded-[20px] p-3 sm:p-4 flex items-center gap-3 sm:gap-4 bg-black/20">
+                    <Infinity className="w-5 h-5 sm:w-6 sm:h-6 text-neon opacity-80 shrink-0" />
                     <div className="flex flex-col">
-                      <span className="font-mono text-[10px] text-cream/50 uppercase tracking-wider">Канал</span>
-                      <span className="font-mono text-[14px] text-cream font-bold">{selectedServer.extended.network}</span>
+                      <span className="font-mono text-[9px] sm:text-[10px] text-cream/50 uppercase tracking-wider">Канал</span>
+                      <span className="font-mono text-[12px] sm:text-[14px] text-cream font-bold">{selectedServer.extended.network}</span>
                     </div>
                   </div>
-                  <div className="liquid-glass rounded-[20px] p-4 flex items-center gap-4 bg-black/20 col-span-2">
-                    <Shield className="w-6 h-6 text-neon opacity-80 shrink-0" />
+                  <div className="liquid-glass rounded-[16px] sm:rounded-[20px] p-3 sm:p-4 flex items-center gap-3 sm:gap-4 bg-black/20 col-span-2">
+                    <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-neon opacity-80 shrink-0" />
                     <div className="flex flex-col">
-                      <span className="font-mono text-[10px] text-cream/50 uppercase tracking-wider">DDoS Защита</span>
-                      <span className="font-mono text-[14px] text-cream font-bold">{selectedServer.extended.ddos}</span>
+                      <span className="font-mono text-[9px] sm:text-[10px] text-cream/50 uppercase tracking-wider">DDoS Защита</span>
+                      <span className="font-mono text-[12px] sm:text-[14px] text-cream font-bold">{selectedServer.extended.ddos}</span>
                     </div>
                   </div>
                 </div>
 
-                <a href="#contact" onClick={() => setSelectedServer(null)} className="mt-8 md:mt-auto w-full min-h-[64px] shrink-0 rounded-full bg-gradient-to-br from-neon to-green-500 text-dark font-grotesk text-[20px] uppercase tracking-wider hover:shadow-[0_0_30px_rgba(111,255,0,0.4)] hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-3 group">
+                <a href="#contact" onClick={() => setSelectedServer(null)} className="mb-6 md:mb-0 mt-4 sm:mt-8 md:mt-auto w-full min-h-[56px] sm:min-h-[64px] shrink-0 rounded-full bg-gradient-to-br from-neon to-green-500 text-dark font-grotesk text-[16px] sm:text-[20px] uppercase tracking-wider hover:shadow-[0_0_30px_rgba(111,255,0,0.4)] hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 sm:gap-3 group">
                   Развернуть сервер
-                  <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform" />
                 </a>
               </div>
             </motion.div>
@@ -212,11 +215,11 @@ export default function App() {
       <main className="relative w-full overflow-hidden">
         {/* HEADER */}
         <header 
-          className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 flex justify-between items-center w-full px-6 sm:px-12 md:px-16 lg:px-24 mx-auto max-w-[1831px] ${
+          className={`fixed top-0 left-0 right-0 z-[120] transition-all duration-500 flex justify-between items-center w-full px-6 sm:px-12 md:px-16 lg:px-24 mx-auto max-w-[1831px] ${
             isScrolled ? 'py-4 mt-2 lg:mt-4' : 'py-8 mt-2 lg:mt-4'
           }`}
         >
-          <div className={`font-grotesk uppercase tracking-wider text-cream transition-all duration-500 ${isScrolled ? 'text-[16px]' : 'text-[20px]'}`}>
+          <div className={`font-grotesk uppercase tracking-wider text-cream transition-all duration-500 relative z-[110] ${isScrolled ? 'text-[16px]' : 'text-[20px]'}`}>
             ByteZone
           </div>
           
@@ -239,9 +242,39 @@ export default function App() {
             </motion.nav>
           </div>
 
+          <button 
+            className="lg:hidden relative z-[110] w-10 h-10 flex items-center justify-center text-cream bg-white/5 backdrop-blur-md rounded-full border border-white/10"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+
           {/* Empty div for right side balance since we removed socials */}
           <div className="hidden lg:block w-[120px]"></div>
         </header>
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+               initial={{ opacity: 0, y: -20 }}
+               animate={{ opacity: 1, y: 0 }}
+               exit={{ opacity: 0, y: -20 }}
+               className="fixed inset-0 z-[105] bg-dark/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 lg:hidden"
+            >
+              {NAV_ITEMS.map((item) => (
+                <a 
+                  key={item.label} 
+                  href={item.href} 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="font-grotesk uppercase text-[24px] sm:text-[32px] text-cream hover:text-neon transition duration-300"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* SECTION 1: HERO */}
         <section id="home" className="relative w-full min-h-screen rounded-b-[32px] overflow-hidden bg-dark">
@@ -259,12 +292,12 @@ export default function App() {
           <div className="relative z-10 w-full max-w-[1831px] mx-auto min-h-screen flex flex-col px-6 sm:px-12 md:px-16 lg:px-24 py-8">
             <div className="flex-1 flex flex-col justify-center relative mt-20 lg:mt-0">
               <div className="relative w-full max-w-[780px] lg:ml-32">
-                <h1 className="font-grotesk uppercase text-[40px] sm:text-[60px] md:text-[75px] lg:text-[90px] leading-[1.05] sm:leading-[1]">
+                <h1 className="font-grotesk uppercase text-[32px] sm:text-[48px] md:text-[75px] lg:text-[90px] leading-[1.05] sm:leading-[1]">
                   За пределами<br />
                   и ( твоих ) привычных<br />
                   границ
                 </h1>
-                <span className="font-condiment text-neon text-[24px] sm:text-[32px] md:text-[40px] lg:text-[48px] absolute right-4 sm:right-12 md:-right-8 top-[30%] sm:top-[40%] -rotate-2 mix-blend-exclusion opacity-90 drop-shadow-md">
+                <span className="font-condiment text-neon text-[20px] sm:text-[28px] md:text-[40px] lg:text-[48px] absolute right-2 sm:right-12 md:-right-8 top-[30%] sm:top-[40%] -rotate-2 mix-blend-exclusion opacity-90 drop-shadow-md">
                   Облачный хостинг
                 </span>
               </div>
@@ -288,13 +321,13 @@ export default function App() {
           <div className="relative z-10 w-full max-w-[1831px] mx-auto min-h-screen flex flex-col justify-between px-6 sm:px-12 md:px-16 lg:px-24 py-16 sm:py-24">
             
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 lg:gap-0">
-              <div className="relative">
+              <div className="relative mb-12 lg:mb-0">
                 <h2 className="font-grotesk uppercase text-[32px] sm:text-[48px] md:text-[54px] lg:text-[60px] leading-[1.1]">
                   Привет!<br />
                   Мы ByteZone
                 </h2>
-                <div className="absolute right-0 sm:right-[-40px] bottom-[-40px] sm:bottom-[-60px] -rotate-3 mix-blend-exclusion drop-shadow-md">
-                  <span className="font-condiment text-neon text-[36px] sm:text-[48px] lg:text-[68px]">
+                <div className="absolute right-0 lg:right-[-40px] bottom-[-25px] sm:bottom-[-40px] lg:bottom-[-60px] -rotate-3 mix-blend-exclusion drop-shadow-md">
+                  <span className="font-condiment text-neon text-[28px] sm:text-[40px] lg:text-[68px]">
                     ByteZone
                   </span>
                 </div>
@@ -323,11 +356,11 @@ export default function App() {
             
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-16 lg:mb-24 gap-12">
               <div>
-                <h2 className="font-grotesk uppercase text-[32px] sm:text-[48px] lg:text-[60px] leading-[1.1]">
+                <h2 className="font-grotesk uppercase text-[28px] sm:text-[40px] lg:text-[60px] leading-[1.1]">
                   Коллекция<br />
-                  <span className="inline-block ml-12 sm:ml-24 lg:ml-32">
-                    <span className="font-condiment text-neon lowercase pr-4 mix-blend-exclusion drop-shadow-md">Облачных</span>
-                    серверов
+                  <span className="inline-block flex flex-wrap items-center mt-2 sm:mt-0 sm:ml-24 lg:ml-32">
+                    <span className="font-condiment text-neon lowercase pr-3 sm:pr-4 mix-blend-exclusion drop-shadow-md">Облачных</span>
+                    <span className="mt-1 sm:mt-0">серверов</span>
                   </span>
                 </h2>
               </div>
@@ -355,9 +388,9 @@ export default function App() {
                   onClick={() => setSelectedServer(server)} 
                   className="server-card liquid-glass rounded-[32px] p-[18px] group hover:bg-white/10 transition duration-500 cursor-pointer flex flex-col hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
                 >
-                  <div className="flex justify-between items-center px-4 mb-4 mt-2 relative z-10">
-                    <h3 className="font-grotesk text-[28px] uppercase tracking-wide text-cream">{server.name}</h3>
-                    <span className="font-mono text-[20px] text-neon">{server.price}</span>
+                  <div className="flex justify-between items-center px-1 sm:px-4 mb-3 sm:mb-4 mt-1 sm:mt-2 relative z-10">
+                    <h3 className="font-grotesk text-[24px] sm:text-[28px] uppercase tracking-wide text-cream">{server.name}</h3>
+                    <span className="font-mono text-[16px] sm:text-[20px] text-neon">{server.price}</span>
                   </div>
                   <div className="relative w-full pb-[75%] rounded-[24px] overflow-hidden bg-black/50 mb-5 relative group-hover:ring-2 ring-white/10 transition-all">
                     <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
@@ -431,13 +464,13 @@ export default function App() {
                 </a>
               </div>
 
-              <div className="flex flex-col items-end lg:items-start w-full lg:w-auto relative pt-16 lg:pt-24 mt-8 lg:mt-0">
+              <div className="flex flex-col items-end lg:items-start w-full lg:w-auto relative pt-14 lg:pt-24 mt-8 lg:mt-0">
                 <div className="absolute right-0 lg:left-0 top-0 lg:-left-6 z-10 transform -rotate-3">
-                  <span className="font-condiment text-neon text-[36px] sm:text-[48px] lg:text-[76px] mix-blend-exclusion drop-shadow-md">
+                  <span className="font-condiment text-neon text-[28px] sm:text-[48px] lg:text-[76px] mix-blend-exclusion drop-shadow-md">
                     Выйди за рамки
                   </span>
                 </div>
-                <h2 className="font-grotesk uppercase text-[28px] sm:text-[42px] md:text-[54px] lg:text-[72px] leading-[1.05] text-cream drop-shadow-lg text-right lg:text-left relative z-20 mt-4 sm:mt-6 lg:mt-8">
+                <h2 className="font-grotesk uppercase text-[24px] sm:text-[42px] md:text-[54px] lg:text-[72px] leading-[1.05] text-cream drop-shadow-lg text-right lg:text-left relative z-20 mt-4 sm:mt-6 lg:mt-8">
                   <div className="mb-2 sm:mb-4 lg:mb-6 text-neon mix-blend-exclusion">ПРИСОЕДИНЯЙСЯ.</div>
                   ОТКРОЙ СКРЫТОЕ.<br />
                   ОПРЕДЕЛИ БУДУЩЕЕ.<br />
