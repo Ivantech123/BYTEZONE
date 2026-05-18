@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Mail, Twitter, Github, ChevronRight, X, Cpu, HardDrive, Infinity, Shield, Menu } from 'lucide-react';
+import { Mail, Twitter, Github, ChevronRight, X, Cpu, HardDrive, Infinity, Shield, Menu, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Dashboard } from './Dashboard';
+import { CustomConfig } from './CustomConfig';
 
 const NAV_ITEMS = [
   { label: 'Главная', href: '#home' },
@@ -61,6 +63,8 @@ const SERVERS = [
 ];
 
 export default function App() {
+  const [view, setView] = useState<'landing' | 'dashboard'>('landing');
+  const [isCustomConfigOpen, setIsCustomConfigOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedServer, setSelectedServer] = useState<typeof SERVERS[0] | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -217,7 +221,29 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <main className="relative w-full overflow-hidden">
+      {/* Custom Config Modal */}
+      <AnimatePresence>
+        {isCustomConfigOpen && (
+          <CustomConfig 
+            onClose={() => setIsCustomConfigOpen(false)}
+            onDeploy={() => {
+              setIsCustomConfigOpen(false);
+              setView('dashboard');
+              window.scrollTo(0, 0);
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence mode="wait">
+        {view === 'landing' ? (
+          <motion.main 
+            key="landing"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="relative w-full overflow-hidden"
+          >
         {/* HEADER */}
         <header 
           className={`fixed top-0 left-0 right-0 z-[120] transition-all duration-500 flex justify-between items-center w-full px-6 sm:px-12 md:px-16 lg:px-24 mx-auto max-w-[1831px] ${
@@ -433,6 +459,27 @@ export default function App() {
                   </div>
                 </div>
               ))}
+              
+              <div 
+                onClick={() => setIsCustomConfigOpen(true)}
+                className="server-card liquid-glass rounded-[32px] p-[18px] group hover:bg-white/10 transition duration-500 cursor-pointer flex flex-col hover:shadow-[0_0_30px_rgba(111,255,0,0.15)] border-2 border-dashed border-neon/30 hover:border-neon/60 bg-neon/5"
+              >
+                <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-center gap-6">
+                  <div className="w-20 h-20 rounded-full bg-neon/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-neon/20 transition-all duration-300">
+                    <Plus className="w-10 h-10 text-neon" />
+                  </div>
+                  <div>
+                    <h3 className="font-grotesk text-[32px] uppercase tracking-wide text-cream mb-2">Свой конфиг</h3>
+                    <p className="font-mono text-[14px] text-cream/70 uppercase max-w-[200px] mx-auto">
+                      Настрой сервер под свои уникальные задачи
+                    </p>
+                  </div>
+                  <div className="px-6 py-3 rounded-full bg-neon text-dark font-grotesk uppercase tracking-wider mt-4">
+                    Настроить
+                  </div>
+                </div>
+              </div>
+
             </div>
 
           </div>
@@ -482,8 +529,22 @@ export default function App() {
             </div>
           </div>
         </section>
-
-      </main>
+          </motion.main>
+        ) : (
+          <motion.div
+            key="dashboard"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="relative w-full min-h-screen bg-dark"
+          >
+            <Dashboard onLogout={() => {
+              setView('landing');
+              window.scrollTo(0,0);
+            }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
