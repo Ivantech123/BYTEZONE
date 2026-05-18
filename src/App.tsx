@@ -125,7 +125,7 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[150] flex items-center justify-center md:p-8 bg-dark/95 md:bg-dark/80 backdrop-blur-md"
+            className="fixed inset-0 z-[150] flex items-start md:items-center justify-center md:p-8 bg-dark/95 md:bg-dark/80 backdrop-blur-md overflow-y-auto"
             onClick={() => setSelectedServer(null)}
           >
             <motion.div
@@ -133,11 +133,11 @@ export default function App() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full h-[100dvh] md:h-auto md:max-h-[85vh] max-w-[1000px] liquid-glass bg-dark rounded-none md:rounded-[32px] flex flex-col md:flex-row overflow-y-auto md:overflow-hidden"
+              className="relative w-full min-h-[100dvh] md:min-h-0 md:h-auto md:max-h-[85vh] max-w-[1000px] liquid-glass bg-dark rounded-none md:rounded-[32px] flex flex-col md:flex-row md:overflow-hidden pb-8 md:pb-0"
             >
               <button 
                 onClick={() => setSelectedServer(null)} 
-                className="absolute top-4 right-4 z-[60] w-10 h-10 sm:w-12 sm:h-12 bg-black/40 backdrop-blur border border-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all group shadow-lg"
+                className="fixed md:absolute top-4 right-4 md:right-4 z-[60] w-10 h-10 sm:w-12 sm:h-12 bg-black/40 backdrop-blur border border-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all group shadow-lg"
               >
                 <X className="w-5 h-5 text-cream group-hover:scale-110 transition-transform" />
               </button>
